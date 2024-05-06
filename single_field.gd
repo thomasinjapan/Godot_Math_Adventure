@@ -18,16 +18,13 @@ extends Node2D
 
 var isSelected:bool = false #defines if field is currently part of a selection
 
-@export_group("Neighbors") ## List of all neighboring fields
-@export var above:SingleField ## field above this field
-@export var below:SingleField ## field below this field
-@export var left:SingleField ## field left of this field
-@export var right:SingleField ## field right of this field
-
 #endregion
 
 #region Signals
-signal valueUpdated(Node2D)
+signal valueUpdated(SingleField)   # emits if the value of a field has changed
+signal touched(SingleField)        # emits if field is touched and needs to be checked if it may be selected
+signal selected(SingleField)       # emits if a field was selected
+signal deselected(SingleField)     # emits if field selection ends
 #endregion
 
 #region system functions
@@ -39,7 +36,7 @@ func _ready():
 
 #region UI functions
 
-#updtest the label based on the current value 
+#updates the label based on the current value 
 func updateLabel():
 	%label.text = str(value)
 
@@ -47,12 +44,12 @@ func updateLabel():
 
 #region input
 
-#register of mouse was clicked on field
+#register if mouse was clicked on field
 @warning_ignore("unused_parameter")
 func _on_area_2d_input_event(viewport, event, shape_idx):
 	#TODO: add swipe into the field
 	if (event is InputEventMouseButton):
 		if event.pressed:
 			print(value)
-			print("left:" + str(left.value))
+			touched.emit(self)
 #endregion

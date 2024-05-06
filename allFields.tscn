@@ -48,7 +48,7 @@ x = 4
 y = 2
 
 [node name="singleField31" parent="." instance=ExtResource("1_tbvqa")]
-position = Vector2(0, 257)
+position = Vector2(0, 256)
 value = 31
 y = 3
 
@@ -73,22 +73,22 @@ y = 3
 [node name="singleField41" parent="." instance=ExtResource("1_tbvqa")]
 position = Vector2(0, 384)
 value = 41
-y = 2
+y = 4
 
 [node name="singleField42" parent="." instance=ExtResource("1_tbvqa")]
 position = Vector2(128, 384)
 value = 42
 x = 2
-y = 2
+y = 4
 
 [node name="singleField43" parent="." instance=ExtResource("1_tbvqa")]
 position = Vector2(256, 384)
 value = 43
 x = 3
-y = 2
+y = 4
 
 [node name="singleField44" parent="." instance=ExtResource("1_tbvqa")]
 position = Vector2(384, 384)
 value = 44
 x = 4
-y = 2
+y = 4
