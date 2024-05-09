@@ -1,0 +1,94 @@
+[gd_scene load_steps=3 format=3 uid="uid://ccoq8do7h0thy"]
+
+[ext_resource type="Script" path="res://allFields.gd" id="1_00jqd"]
+[ext_resource type="PackedScene" uid="uid://bwul52ujdirx0" path="res://single_field.tscn" id="1_tbvqa"]
+
+[node name="allFields" type="Node2D"]
+script = ExtResource("1_00jqd")
+
+[node name="singleField11" parent="." instance=ExtResource("1_tbvqa")]
+value = 11
+
+[node name="singleField12" parent="." instance=ExtResource("1_tbvqa")]
+position = Vector2(128, 0)
+value = 12
+x = 2
+
+[node name="singleField13" parent="." instance=ExtResource("1_tbvqa")]
+position = Vector2(256, 0)
+value = 13
+x = 3
+
+[node name="singleField14" parent="." instance=ExtResource("1_tbvqa")]
+position = Vector2(384, 0)
+value = 14
+x = 4
+
+[node name="singleField21" parent="." instance=ExtResource("1_tbvqa")]
+position = Vector2(0, 128)
+value = 21
+y = 2
+
+[node name="singleField22" parent="." instance=ExtResource("1_tbvqa")]
+position = Vector2(128, 128)
+value = 22
+x = 2
+y = 2
+
+[node name="singleField23" parent="." instance=ExtResource("1_tbvqa")]
+position = Vector2(256, 128)
+value = 23
+x = 3
+y = 2
+
+[node name="singleField24" parent="." instance=ExtResource("1_tbvqa")]
+position = Vector2(384, 128)
+value = 24
+x = 4
+y = 2
+
+[node name="singleField31" parent="." instance=ExtResource("1_tbvqa")]
+position = Vector2(0, 256)
+value = 31
+y = 3
+
+[node name="singleField32" parent="." instance=ExtResource("1_tbvqa")]
+position = Vector2(128, 256)
+value = 32
+x = 2
+y = 3
+
+[node name="singleField33" parent="." instance=ExtResource("1_tbvqa")]
+position = Vector2(256, 256)
+value = 33
+x = 3
+y = 3
+
+[node name="singleField34" parent="." instance=ExtResource("1_tbvqa")]
+position = Vector2(384, 256)
+value = 34
+x = 4
+y = 3
+
+[node name="singleField41" parent="." instance=ExtResource("1_tbvqa")]
+position = Vector2(0, 384)
+value = 41
+y = 4
+
+[node name="singleField42" parent="." instance=ExtResource("1_tbvqa")]
+position = Vector2(128, 384)
+value = 42
+x = 2
+y = 4
+
+[node name="singleField43" parent="." instance=ExtResource("1_tbvqa")]
+position = Vector2(256, 384)
+value = 43
+x = 3
+y = 4
+
+[node name="singleField44" parent="." instance=ExtResource("1_tbvqa")]
+position = Vector2(384, 384)
+value = 44
+x = 4
+y = 4
