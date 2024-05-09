@@ -1,6 +1,20 @@
 class_name SingleField
 extends Node2D
 
+#region constants and enumerations
+const SELECTION_NONE = 0
+const SELECTION_UP = 1
+const SELECTION_DOWN = 2
+const SELECTION_LEFT = 4
+const SELECTION_RIGHT = 8
+const SELECTION_ALL = 15
+
+enum enumSelectionDirection {SELECTION_NONE, SELECTION_UP, SELECTION_DOWN, SELECTION_LEFT, SELECTION_RIGHT, SELECTION_ALL}
+
+
+
+#endregion
+
 #region properties
 @export var value:int = 0: #value of the field
 	get:
@@ -9,14 +23,84 @@ extends Node2D
 		value=newValue
 		updateLabel()
 		valueUpdated.emit(self)
+
+@export var selectionBorder:enumSelectionDirection = SELECTION_ALL: ## current selection border directions
+	get:
+		return selectionBorder
+	set(direction):
+		selectionBorder=value
+
+var isSelectionUp:bool :
+	get:
+		return selectionBorder & SELECTION_UP == SELECTION_UP
+		
+var isSelectionDown:bool :
+	get:
+		return selectionBorder & SELECTION_DOWN == SELECTION_DOWN
+
+var isSelectionLeft:bool :
+	get:
+		return selectionBorder & SELECTION_LEFT == SELECTION_LEFT
+
+var isSelectionRight:bool :
+	get:
+		return selectionBorder & SELECTION_RIGHT == SELECTION_RIGHT
+
+## defines if field is currently part of a selection
+var isSelected:bool = false :
+	get:
+		return isSelected
+	set(value):
+		if isSelected && not value:
+			selected.emit(self)
+		elif not isSelected && value:
+			deselected.emit(self)
+		else:
+			pass
+		isSelected=value
 #endregion
 
 #region variables
 @export_group("location in field")
 @export var x:int = 1
 @export var y:int = 1
+#endregion
 
-var isSelected:bool = false #defines if field is currently part of a selection
+#region functions
+## adds the selection directions to the selection of the field
+## !!! does not trigger a signal if the selection status changes
+func addSelectionDirection(directions:enumSelectionDirection):
+	# add selection direction to all current directions
+	selectionBorder |= directions
+
+
+## removes the selection directions from the selection of the field
+## !!! does not trigger a selection if the selection status changes
+func removeSelectionDirection(directions:enumSelectionDirection):
+	# remove selection direction to all current directions
+	selectionBorder =  selectionBorder | ~directions
+
+## selects the field and marks all relevant borders
+func select(borderDirection:enumSelectionDirection):
+	# add border
+	addSelectionDirection(borderDirection)
+	
+	updateBorders()
+	
+	# emit signal if selection is new
+	if not isSelected:
+		selected.emit(self)
+		
+## deselects the field and removes all UI markers
+func deselect():
+	# remove borders
+	removeSelectionDirection(SELECTION_ALL)
+	
+	updateBorders()
+	
+	# emit signal if selection is new
+	if isSelected:
+		deselected.emit(self)
 
 #endregion
 
@@ -36,9 +120,14 @@ func _ready():
 
 #region UI functions
 
-#updates the label based on the current value 
+## updates the label based on the current value 
 func updateLabel():
 	%label.text = str(value)
+
+## updates the borders of the ui based on the current borderselection and if the field is selected at all
+func updateBorders():
+	pass
+	# TODO: implement
 
 #endregion
 
