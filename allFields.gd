@@ -1,7 +1,6 @@
 class_name allFields
 extends Node2D
 
-# TODO: implement selection of area
 
 var selectedSum:int:    # sum of all values in the selection
 	get:
@@ -72,7 +71,11 @@ func _on_singleField_touched(singleField:SingleField):
 	if selection == []:
 		print("no selection so far")
 		# TODO: find out correct borders
-		singleField.select(SingleField.enumSelectionDirection.SELECTION_ALL)
+		print(SingleField.SELECTION_ALL)
+		singleField.select(SingleField.SELECTION_ALL)
+		
+		selection.append(singleField)
+
 	elif selection.has(singleField):
 		print("field is already part of selection")
 		# do nothing
@@ -80,14 +83,21 @@ func _on_singleField_touched(singleField:SingleField):
 		# add to selection
 		# TODO: find out correct borders
 		singleField.select(SingleField.enumSelectionDirection.SELECTION_ALL)
+		
+		selection.append(singleField)
+	else: #new selection starts
+		# delesect all fields
+		# TODO:check if deselection is correct
+		for deselectField:SingleField in selection:
+			deselectField.deselect()
+		
+		selection=[singleField]
 	
 	prints(selection)
 
 ## triggers if a field is selected
 func _on_singleField_selected(singleField:SingleField):
-	# add to selection
-	selection.append(singleField)
-	
+
 	# add value to overall sum
 	selectedSum += singleField.value
 	
@@ -97,5 +107,5 @@ func _on_singleField_selected(singleField:SingleField):
 ## checks for a field if it is a neighbor of the existing selection 
 func isNeighborToSelection(singleField:SingleField) -> bool:
 	# TODO: implement
-	return true
+	return false
 

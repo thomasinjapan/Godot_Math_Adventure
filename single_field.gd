@@ -22,27 +22,7 @@ enum enumSelectionDirection {SELECTION_NONE, SELECTION_UP, SELECTION_DOWN, SELEC
 		updateLabel()
 		valueUpdated.emit(self)
 
-@export var selectionBorder:enumSelectionDirection = SELECTION_ALL: ## current selection border directions
-	get:
-		return selectionBorder
-	set(direction):
-		selectionBorder=value
-
-var isSelectionUp:bool :
-	get:
-		return selectionBorder & SELECTION_UP == SELECTION_UP
-		
-var isSelectionDown:bool :
-	get:
-		return selectionBorder & SELECTION_DOWN == SELECTION_DOWN
-
-var isSelectionLeft:bool :
-	get:
-		return selectionBorder & SELECTION_LEFT == SELECTION_LEFT
-
-var isSelectionRight:bool :
-	get:
-		return selectionBorder & SELECTION_RIGHT == SELECTION_RIGHT
+@export var selectionBorder:enumSelectionDirection = SELECTION_NONE ## current selection border directions
 
 ## defines if field is currently part of a selection
 var isSelected:bool = false :
@@ -50,9 +30,9 @@ var isSelected:bool = false :
 		return isSelected
 	set(value):
 		if isSelected && not value:
-			selected.emit(self)
-		elif not isSelected && value:
 			deselected.emit(self)
+		elif not isSelected && value:
+			selected.emit(self)
 		else:
 			pass
 		isSelected=value
