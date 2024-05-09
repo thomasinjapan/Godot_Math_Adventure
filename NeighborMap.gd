@@ -9,7 +9,6 @@ var right:SingleField = null  ## field to the righ if it exists, else null
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
-	
 
 ## initialize all fields 
 func _init(_me:SingleField,_top:SingleField,_bottom:SingleField,_left:SingleField,_right:SingleField):

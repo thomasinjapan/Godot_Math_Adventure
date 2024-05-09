@@ -33,21 +33,20 @@ signal valueUpdated(int)    #triggers when the value of the selection was update
 ## initialize the fieldArray
 ## since it is 2-dimensional it must be initialized manually
 func createFieldArray():
-	for x:int in range(0,5):
-		fieldArray.append([])     # make the array 4-dimensional
-		for y:int in range(0,5):
+	for x:int in range(0,4):
+		for y:int in range(0,4):
 			# prepare new line for next x
 			var newNeighborField:NeighborMap = NeighborMap.new(
-					getFieldByCoordinate(x,y),
-					getFieldByCoordinate(x,y-1),
-					getFieldByCoordinate(x,y+1),
-					getFieldByCoordinate(x-1,y),
-					getFieldByCoordinate(x+1,y)
+					getFieldByCoordinate(x+1  ,y+1),
+					getFieldByCoordinate(x+1  ,y+1-1),
+					getFieldByCoordinate(x+1  ,y+1+1),
+					getFieldByCoordinate(x+1-1,y+1),
+					getFieldByCoordinate(x+1+1,y+1)
 			)
-			fieldArray[x].append(newNeighborField)
+			fieldArray.append(newNeighborField)
 			#if self is null, replace it with null
 			if newNeighborField.me==null:
-				fieldArray[x][y]=null
+				fieldArray.append(null)
 			prints(newNeighborField)
 	prints(fieldArray)
 
@@ -62,10 +61,11 @@ func getFieldByCoordinate(x:int,y:int) -> SingleField:
 
 #region Signal Subscriptions
 
-## triggers if a field is tocuhed and checks if it
-## -adds to an existing selection
-## -starts a new selection
-## -removes from a selection <-- not sure if I will implemented
+## triggers if a field is touched and checks if it
+## - creates a new selection
+## - adds to an existing selection
+## - starts a new selection
+## - removes from a selection <-- not sure if I will implemented
 func _on_singleField_touched(singleField:SingleField):
 	print("touched:" + singleField.name)
 	if selection == []:
@@ -106,6 +106,15 @@ func _on_singleField_selected(singleField:SingleField):
 
 ## checks for a field if it is a neighbor of the existing selection 
 func isNeighborToSelection(singleField:SingleField) -> bool:
-	# TODO: implement
+	var result:bool = false
+	for indexField:SingleField in selection:
+		#find field in fieldArray
+		for arrayField:NeighborMap in fieldArray:
+			if arrayField.me == indexField:
+				# field found, now look around
+				#look around and if not null and found, return true
+				if arrayField.top != null && arrayField.top == singleField: return true
+				if arrayField.bottom != null && arrayField.bottom == singleField: return true
+				if arrayField.left != null && arrayField.left == singleField: return true
+				if arrayField.right != null && arrayField.right == singleField: return true
 	return false
-
