@@ -1,6 +1,8 @@
 class_name SingleField
 extends Node2D
 
+# TODO: check if regions are still okay
+
 #region constants and enumerations
 const SELECTION_NONE = 0
 const SELECTION_UP = 1
@@ -36,6 +38,7 @@ var isSelected:bool = false :
 		else:
 			pass
 		isSelected=value
+		updateBorders()
 #endregion
 
 #region variables
@@ -50,25 +53,23 @@ var isSelected:bool = false :
 func addSelectionDirection(directions:enumSelectionDirection):
 	# add selection direction to all current directions
 	selectionBorder |= directions
+	updateBorders()
 
 
 ## removes the selection directions from the selection of the field
 ## !!! does not trigger a selection if the selection status changes
 func removeSelectionDirection(directions:enumSelectionDirection):
 	# remove selection direction to all current directions
-	selectionBorder =  selectionBorder | ~directions
+	selectionBorder =  selectionBorder & ~directions
+	updateBorders()
 
 ## selects the field and marks all relevant borders
 func select(borderDirection:enumSelectionDirection):
 	# add border
 	addSelectionDirection(borderDirection)
 	
-	updateBorders()
-	
-	# emit signal if selection is new
 	isSelected=true
-		
-		
+	
 ## deselects the field and removes all UI markers
 func deselect():
 	# remove borders
@@ -93,6 +94,7 @@ signal deselected(SingleField)     # emits if field selection ends
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	updateLabel()
+	updateBorders()
 #endregion
 
 #region UI functions
@@ -103,8 +105,11 @@ func updateLabel():
 
 ## updates the borders of the ui based on the current borderselection and if the field is selected at all
 func updateBorders():
-	pass
-	# TODO: implement
+	$selection/me.visible=isSelected
+	$selection/top.visible= (selectionBorder & SELECTION_UP == SELECTION_UP)
+	$selection/bottom.visible= (selectionBorder & SELECTION_DOWN == SELECTION_DOWN)
+	$selection/left.visible= (selectionBorder & SELECTION_LEFT == SELECTION_LEFT)
+	$selection/right.visible= (selectionBorder & SELECTION_RIGHT == SELECTION_RIGHT)
 
 #endregion
 

@@ -1,6 +1,7 @@
 class_name allFields
 extends Node2D
 
+# TODO: check if regions are still okay
 
 var selectedSum:int:    # sum of all values in the selection
 	get:
@@ -70,51 +71,66 @@ func _on_singleField_touched(singleField:SingleField):
 	print("touched:" + singleField.name)
 	if selection == []:
 		print("no selection so far")
-		# TODO: find out correct borders
-		print(SingleField.SELECTION_ALL)
-		singleField.select(SingleField.SELECTION_ALL)
-		
 		selection.append(singleField)
+		singleField.select(SingleField.SELECTION_NONE)
 
 	elif selection.has(singleField):
 		print("field is already part of selection")
 		# do nothing
-	elif isNeighborToSelection(singleField):
+
+	elif isNeighborToSelection(singleField)>0:
+		var border:int = isNeighborToSelection(singleField)
 		# add to selection
-		# TODO: find out correct borders
-		singleField.select(SingleField.enumSelectionDirection.SELECTION_ALL)
-		
 		selection.append(singleField)
+		singleField.select(border)
+		
 	else: #new selection starts
 		# delesect all fields
-		# TODO:check if deselection is correct
-		for deselectField:SingleField in selection:
-			deselectField.deselect()
+		for deselectField:SingleField in selection: deselectField.deselect()
 		
+		#select new field only and add to selection
 		selection=[singleField]
+		singleField.select(SingleField.SELECTION_NONE)
 	
 	prints(selection)
 
 ## triggers if a field is selected
 func _on_singleField_selected(singleField:SingleField):
+	#recalculate sum
+	var tmpSum:int = 0
+	for field:SingleField in selection:
+		tmpSum+=field.value
 
-	# add value to overall sum
-	selectedSum += singleField.value
+	selectedSum = tmpSum
 	
 	# emit info to game that sum was updated
 #endregion
 
 ## checks for a field if it is a neighbor of the existing selection 
-func isNeighborToSelection(singleField:SingleField) -> bool:
-	var result:bool = false
+## returns
+## 0 - no border
+## 1 - bordering above
+## 2 - bordering below
+## 4 - bordering left
+## 8 - bordering right
+func isNeighborToSelection(singleField:SingleField) -> int:
+	var result:int = 0
 	for indexField:SingleField in selection:
 		#find field in fieldArray
 		for arrayField:NeighborMap in fieldArray:
 			if arrayField.me == indexField:
 				# field found, now look around
 				#look around and if not null and found, return true
-				if arrayField.top != null && arrayField.top == singleField: return true
-				if arrayField.bottom != null && arrayField.bottom == singleField: return true
-				if arrayField.left != null && arrayField.left == singleField: return true
-				if arrayField.right != null && arrayField.right == singleField: return true
-	return false
+				if arrayField.top == singleField:
+					indexField.addSelectionDirection(SingleField.SELECTION_UP)
+					result |= 2
+				if arrayField.bottom == singleField:
+					indexField.addSelectionDirection(SingleField.SELECTION_DOWN)
+					result |= 1
+				if arrayField.left == singleField: 
+					indexField.addSelectionDirection(SingleField.SELECTION_LEFT)
+					result |= 8
+				if arrayField.right == singleField: 
+					indexField.addSelectionDirection(SingleField.SELECTION_RIGHT)
+					result |= 4
+	return result

@@ -34,6 +34,31 @@ offset_left = 120.0
 offset_right = 128.0
 offset_bottom = 128.0
 
+[node name="selection" type="Node2D" parent="."]
+
+[node name="me" type="ColorRect" parent="selection"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 120.0
+offset_bottom = 120.0
+color = Color(1, 0.501961, 1, 0.501961)
+
+[node name="top" type="Polygon2D" parent="selection"]
+color = Color(1, 0.501961, 1, 0.501961)
+polygon = PackedVector2Array(0, 0, 8, 8, 120, 8, 128, 0)
+
+[node name="bottom" type="Polygon2D" parent="selection"]
+color = Color(1, 0.501961, 1, 0.501961)
+polygon = PackedVector2Array(120, 120, 128, 128, 0, 128, 8, 120)
+
+[node name="left" type="Polygon2D" parent="selection"]
+color = Color(1, 0.501961, 1, 0.501961)
+polygon = PackedVector2Array(0, 0, 8, 8, 8, 120, 0, 128)
+
+[node name="right" type="Polygon2D" parent="selection"]
+color = Color(1, 0.501961, 1, 0.501961)
+polygon = PackedVector2Array(128, 0, 120, 8, 120, 120, 128, 128)
+
 [node name="label" type="Label" parent="."]
 unique_name_in_owner = true
 offset_left = 8.0
