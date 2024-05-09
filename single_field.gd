@@ -142,3 +142,8 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 			print(value)
 			touched.emit(self)
 #endregion
+
+## selects the field
+func select():
+	isSelected = true
+	selected.emit(self)
