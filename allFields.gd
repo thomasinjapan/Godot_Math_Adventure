@@ -71,13 +71,15 @@ func _on_singleField_touched(singleField:SingleField):
 	print("touched:" + singleField.name)
 	if selection == []:
 		print("no selection so far")
-		singleField.select()
+		# TODO: find out correct borders
+		singleField.select(SingleField.enumSelectionDirection.SELECTION_ALL)
 	elif selection.has(singleField):
 		print("field is already part of selection")
 		# do nothing
 	elif isNeighborToSelection(singleField):
 		# add to selection
-		singleField.select()
+		# TODO: find out correct borders
+		singleField.select(SingleField.enumSelectionDirection.SELECTION_ALL)
 	
 	prints(selection)
 

@@ -11,8 +11,6 @@ const SELECTION_ALL = 15
 
 enum enumSelectionDirection {SELECTION_NONE, SELECTION_UP, SELECTION_DOWN, SELECTION_LEFT, SELECTION_RIGHT, SELECTION_ALL}
 
-
-
 #endregion
 
 #region properties
@@ -88,8 +86,8 @@ func select(borderDirection:enumSelectionDirection):
 	updateBorders()
 	
 	# emit signal if selection is new
-	if not isSelected:
-		selected.emit(self)
+	isSelected=true
+		
 		
 ## deselects the field and removes all UI markers
 func deselect():
@@ -99,8 +97,7 @@ func deselect():
 	updateBorders()
 	
 	# emit signal if selection is new
-	if isSelected:
-		deselected.emit(self)
+	isSelected=false
 
 #endregion
 
@@ -143,7 +140,4 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 			touched.emit(self)
 #endregion
 
-## selects the field
-func select():
-	isSelected = true
-	selected.emit(self)
+
