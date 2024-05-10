@@ -13,6 +13,7 @@ var selectedSum:int:    # sum of all values in the selection
 #region Variables
 var selection:Array = []    # list of all currently selected fields must be of type SingfleField / arrays can't be strongly typed
 var fieldArray:Array= []    # list of all fields incl. neighbors must be of type SingfleField / arrays can't be strongly typed
+var fieldList:Array=[]      ## is of all fields in order
 #endregion
 
 #region System Functions
@@ -45,6 +46,7 @@ func createFieldArray():
 					getFieldByCoordinate(x+1+1,y+1)
 			)
 			fieldArray.append(newNeighborField)
+			fieldList.append(newNeighborField.me)
 			#if self is null, replace it with null
 			if newNeighborField.me==null:
 				fieldArray.append(null)
@@ -58,6 +60,45 @@ func getFieldByCoordinate(x:int,y:int) -> SingleField:
 			if SingleSingleField.x == x && SingleSingleField.y == y:
 				return SingleSingleField
 	return null
+
+
+## returns the field left of the field or null if empty
+## slow - could be done with direct link to field in fieldarray-1 and catch overflow to earlier line
+func getFieldToLeft(singleField:SingleField) -> SingleField:
+	var newX = singleField.x-1
+	if newX < 1:
+		return null
+	else:
+		return getFieldByCoordinate(newX,singleField.y)
+	
+## returns the field right of the field or null if empty
+## slow - could be done with direct link to field in fieldarray+1 and catch overflow to next line
+func getFieldToRight(singleField:SingleField) -> SingleField:
+	var newX = singleField.x+1
+	if newX > 4:
+		return null
+	else:
+		return getFieldByCoordinate(newX,singleField.y)
+	
+## returns the abope the field or null if empty
+## slow - could be done with direct link to field in fieldarray-5 and catch overflow to earlier line
+func getFieldAbove(singleField:SingleField) -> SingleField:
+	var newY = singleField.y-1
+	if newY < 0:
+		return null
+	else:
+		return getFieldByCoordinate(singleField.x,newY)
+
+## returns the field below the field or null if empty
+## slow - could be done with direct link to field in fieldarray+5 and catch overflow to next line
+func getFieldBelow(singleField:SingleField) -> SingleField:
+	var newY = singleField.y+1
+	if newY > 4:
+		return null
+	else:
+		return getFieldByCoordinate(singleField.x,newY)
+
+
 #endregion
 
 #region Signal Subscriptions
