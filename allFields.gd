@@ -12,7 +12,7 @@ var selectedSum:int:    # sum of all values in the selection
 
 #region Variables
 var selection:Array = []    # list of all currently selected fields must be of type SingfleField / arrays can't be strongly typed
-var fieldArray:Array= []    # list of all fields incl. neighbors must be of type SingfleField / arrays can't be strongly typed
+var fieldList:Array=[]      ## is of all fields in order
 #endregion
 
 #region System Functions
@@ -37,19 +37,8 @@ func createFieldArray():
 	for x:int in range(0,4):
 		for y:int in range(0,4):
 			# prepare new line for next x
-			var newNeighborField:NeighborMap = NeighborMap.new(
-					getFieldByCoordinate(x+1  ,y+1),
-					getFieldByCoordinate(x+1  ,y+1-1),
-					getFieldByCoordinate(x+1  ,y+1+1),
-					getFieldByCoordinate(x+1-1,y+1),
-					getFieldByCoordinate(x+1+1,y+1)
-			)
-			fieldArray.append(newNeighborField)
-			#if self is null, replace it with null
-			if newNeighborField.me==null:
-				fieldArray.append(null)
-			prints(newNeighborField)
-	prints(fieldArray)
+			fieldList.append(getFieldByCoordinate(x,y))
+	prints(fieldList)
 
 ## retruns a field from all fields that match x and y coordinate; else null
 func getFieldByCoordinate(x:int,y:int) -> SingleField:
@@ -58,6 +47,45 @@ func getFieldByCoordinate(x:int,y:int) -> SingleField:
 			if SingleSingleField.x == x && SingleSingleField.y == y:
 				return SingleSingleField
 	return null
+
+
+## returns the field left of the field or null if empty
+## slow - could be done with direct link to field in fieldarray-1 and catch overflow to earlier line
+func getFieldToLeft(singleField:SingleField) -> SingleField:
+	var newX = singleField.x-1
+	if newX < 1:
+		return null
+	else:
+		return getFieldByCoordinate(newX,singleField.y)
+	
+## returns the field right of the field or null if empty
+## slow - could be done with direct link to field in fieldarray+1 and catch overflow to next line
+func getFieldToRight(singleField:SingleField) -> SingleField:
+	var newX = singleField.x+1
+	if newX > 4:
+		return null
+	else:
+		return getFieldByCoordinate(newX,singleField.y)
+	
+## returns the abope the field or null if empty
+## slow - could be done with direct link to field in fieldarray-5 and catch overflow to earlier line
+func getFieldAbove(singleField:SingleField) -> SingleField:
+	var newY = singleField.y-1
+	if newY < 0:
+		return null
+	else:
+		return getFieldByCoordinate(singleField.x,newY)
+
+## returns the field below the field or null if empty
+## slow - could be done with direct link to field in fieldarray+5 and catch overflow to next line
+func getFieldBelow(singleField:SingleField) -> SingleField:
+	var newY = singleField.y+1
+	if newY > 4:
+		return null
+	else:
+		return getFieldByCoordinate(singleField.x,newY)
+
+
 #endregion
 
 #region Signal Subscriptions
@@ -78,20 +106,48 @@ func _on_singleField_touched(singleField:SingleField):
 		print("field is already part of selection")
 		# do nothing
 
-	elif isNeighborToSelection(singleField)>0:
-		var border:int = isNeighborToSelection(singleField)
-		# add to selection
-		selection.append(singleField)
-		singleField.select(border)
-		
-	else: #new selection starts
-		# delesect all fields
-		for deselectField:SingleField in selection: deselectField.deselect()
-		
-		#select new field only and add to selection
-		selection=[singleField]
-		singleField.select(SingleField.SELECTION_NONE)
-	
+	else: # check if how we handle the neighbors
+		var neighborsFromSelection:Array = getNeighborFieldsInSelection(singleField)
+		#if there are no fields are in selection that is neighboring the singleField, start a new selection
+		if neighborsFromSelection[0]==null && \
+				neighborsFromSelection[1]==null && \
+				neighborsFromSelection[2]==null && \
+				neighborsFromSelection[3]==null:
+			for deselectField:SingleField in selection: deselectField.deselect()
+			#select new field only and add to selection
+			selection=[singleField]
+			singleField.select(SingleField.SELECTION_NONE)
+		else: 
+			#add to slection and update connections between selections
+			selection.append(singleField)
+			var borders:int = SingleField.SELECTION_NONE
+
+			# handle if the field above is in selection
+			if neighborsFromSelection[0] != null:
+				var neighbor:SingleField = neighborsFromSelection[0]
+				borders |= SingleField.SELECTION_UP
+				neighbor.addSelectionDirection(SingleField.SELECTION_DOWN)
+
+			# handle if the field below is in selection
+			if neighborsFromSelection[1] != null:
+				var neighbor:SingleField = neighborsFromSelection[1]
+				borders |= SingleField.SELECTION_DOWN
+				neighbor.addSelectionDirection(SingleField.SELECTION_UP)
+
+			# handle if the field left is in selection
+			if neighborsFromSelection[2] != null:
+				var neighbor:SingleField = neighborsFromSelection[2]
+				borders |= SingleField.SELECTION_LEFT
+				neighbor.addSelectionDirection(SingleField.SELECTION_RIGHT)
+
+			# handle if the field above is in selection
+			if neighborsFromSelection[3] != null:
+				var neighbor:SingleField = neighborsFromSelection[3]
+				borders |= SingleField.SELECTION_RIGHT
+				neighbor.addSelectionDirection(SingleField.SELECTION_LEFT)
+
+			singleField.select(borders)
+
 	prints(selection)
 
 ## triggers if a field is selected
@@ -106,31 +162,40 @@ func _on_singleField_selected(singleField:SingleField):
 	# emit info to game that sum was updated
 #endregion
 
-## checks for a field if it is a neighbor of the existing selection 
-## returns
-## 0 - no border
-## 1 - bordering above
-## 2 - bordering below
-## 4 - bordering left
-## 8 - bordering right
-func isNeighborToSelection(singleField:SingleField) -> int:
-	var result:int = 0
-	for indexField:SingleField in selection:
-		#find field in fieldArray
-		for arrayField:NeighborMap in fieldArray:
-			if arrayField.me == indexField:
-				# field found, now look around
-				#look around and if not null and found, return true
-				if arrayField.top == singleField:
-					indexField.addSelectionDirection(SingleField.SELECTION_UP)
-					result |= 2
-				if arrayField.bottom == singleField:
-					indexField.addSelectionDirection(SingleField.SELECTION_DOWN)
-					result |= 1
-				if arrayField.left == singleField: 
-					indexField.addSelectionDirection(SingleField.SELECTION_LEFT)
-					result |= 8
-				if arrayField.right == singleField: 
-					indexField.addSelectionDirection(SingleField.SELECTION_RIGHT)
-					result |= 4
+## returns a list of all fields that are in the selection and neighboring to this field
+## order: above, below, left, right
+func getNeighborFieldsInSelection(singleField:SingleField) -> Array:
+	var result:Array=[]
+	
+	#find field in fieldlist
+	# look at the neighboring fields and check if in selection
+	var leftField:SingleField = getFieldToLeft(singleField)
+	var rightField:SingleField = getFieldToRight(singleField)
+	var topField:SingleField = getFieldAbove(singleField)
+	var bottomField:SingleField = getFieldBelow(singleField)
+	
+	# if the field above is in selection, add it to result; else add null
+	if selection.has(topField):
+		result.append(topField)
+	else:
+		result.append(null)
+
+	# if the field below is in selection, add it to result; else add null
+	if selection.has(bottomField):
+		result.append(bottomField)
+	else:
+		result.append(null)
+
+	# if the field left is in selection, add it to result; else add null
+	if selection.has(leftField):
+		result.append(leftField)
+	else:
+		result.append(null)
+
+	# if the field right is in selection, add it to result; else add null
+	if selection.has(rightField):
+		result.append(rightField)
+	else:
+		result.append(null)
+
 	return result
