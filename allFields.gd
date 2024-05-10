@@ -12,7 +12,6 @@ var selectedSum:int:    # sum of all values in the selection
 
 #region Variables
 var selection:Array = []    # list of all currently selected fields must be of type SingfleField / arrays can't be strongly typed
-#var fieldArray:Array= []    # list of all fields incl. neighbors must be of type SingfleField / arrays can't be strongly typed
 var fieldList:Array=[]      ## is of all fields in order
 #endregion
 
