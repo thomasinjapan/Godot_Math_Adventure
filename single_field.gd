@@ -55,7 +55,6 @@ func addSelectionDirection(directions:enumSelectionDirection):
 	selectionBorder |= directions
 	updateBorders()
 
-
 ## removes the selection directions from the selection of the field
 ## !!! does not trigger a selection if the selection status changes
 func removeSelectionDirection(directions:enumSelectionDirection):
@@ -118,9 +117,12 @@ func updateBorders():
 #register if mouse was clicked on field
 @warning_ignore("unused_parameter")
 func _on_area_2d_input_event(viewport, event, shape_idx):
-	#TODO: add swipe into the field
-	if (event is InputEventMouseButton):
+	if (event is InputEventMouseButton): # mouse press over thge field
 		if event.pressed:
+			print(value)
+			touched.emit(self)
+	elif (event is InputEventMouseMotion): # mouse is moving over the field
+		if event.pressure>0: #mouse is pressed
 			print(value)
 			touched.emit(self)
 #endregion
