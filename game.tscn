@@ -7,4 +7,4 @@
 script = ExtResource("1_7xh3v")
 
 [node name="mathArea" parent="." instance=ExtResource("2_5udfw")]
-position = Vector2(208, 88)
+position = Vector2(448, 64)

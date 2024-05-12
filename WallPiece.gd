@@ -7,6 +7,11 @@ extends Node2D
 @export var x:int = 1
 #endregion
 
+#region Signals
+signal damaged(WallPiece)   # emits if the wall took damage
+signal destroyed(WallPiece) # emits if the wall was destroyed
+#endregion
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	updateLabels()
@@ -17,5 +22,18 @@ func _ready():
 func updateLabels():
 	$labels/HP.text = str(HP)
 	$labels/x.text  = "x = " + str(x)
+#endregion
 
+#region functions
+## causes taking damage and handles all concequences
+func takeDamage(damage:int) -> void:
+	#do math
+	HP -= damage
+	
+	#update ui
+	updateLabels()
+
+	#emit signals
+	damaged.emit(self)
+	if HP <= 0: destroyed.emit(self)
 #endregion
