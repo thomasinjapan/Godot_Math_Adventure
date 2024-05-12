@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://clv7iv1ivchmc"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_n8p6r"]
+font_size = 48
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kq4kv"]
+size = Vector2(128, 128)
+
+[node name="wallPiece" type="Node2D"]
+
+[node name="labels" type="Node2D" parent="."]
+
+[node name="HP" type="Label" parent="labels"]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 112.0
+offset_bottom = 112.0
+text = "HP"
+label_settings = SubResource("LabelSettings_n8p6r")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="x" type="Label" parent="labels"]
+offset_left = 88.0
+offset_top = 104.0
+offset_right = 128.0
+offset_bottom = 128.0
+text = "x=1"
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visible = false
+position = Vector2(64, 64)
+shape = SubResource("RectangleShape2D_kq4kv")

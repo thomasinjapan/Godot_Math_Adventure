@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bwul52ujdirx0"]
 
-[ext_resource type="Script" path="res://single_field.gd" id="1_xjq61"]
+[ext_resource type="Script" path="res://Single_field.gd" id="1_adgek"]
 
 [sub_resource type="SystemFont" id="SystemFont_vwldw"]
 
@@ -12,7 +12,7 @@ font_size = 68
 size = Vector2(128, 128)
 
 [node name="singleField" type="Node2D"]
-script = ExtResource("1_xjq61")
+script = ExtResource("1_adgek")
 
 [node name="frame" type="Node2D" parent="."]
 

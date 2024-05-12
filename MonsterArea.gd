@@ -1,4 +1,4 @@
-class_name allFields
+class_name MonsterArea
 extends Node2D
 
 # TODO: check if regions are still okay

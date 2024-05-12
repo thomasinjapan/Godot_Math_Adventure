@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ccoq8do7h0thy"]
 
-[ext_resource type="Script" path="res://allFields.gd" id="1_00jqd"]
-[ext_resource type="PackedScene" uid="uid://bwul52ujdirx0" path="res://single_field.tscn" id="1_tbvqa"]
+[ext_resource type="Script" path="res://MonsterArea.gd" id="1_00jqd"]
+[ext_resource type="PackedScene" uid="uid://bwul52ujdirx0" path="res://Single_field.tscn" id="1_tbvqa"]
 
 [node name="allFields" type="Node2D"]
 script = ExtResource("1_00jqd")
