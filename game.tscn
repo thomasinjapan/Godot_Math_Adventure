@@ -8,3 +8,14 @@ script = ExtResource("1_7xh3v")
 
 [node name="mathArea" parent="." instance=ExtResource("2_5udfw")]
 position = Vector2(448, 64)
+
+[node name="debugging" type="Node2D" parent="."]
+
+[node name="attack" type="Button" parent="debugging"]
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 280.0
+offset_bottom = 168.0
+text = "attack"
+
+[connection signal="button_up" from="debugging/attack" to="." method="_on_attack_button_up"]

@@ -3,12 +3,14 @@ extends Node2D
 
 # TODO: check if regions are still okay
 
+#region Properties
 var selectedSum:int:    # sum of all values in the selection
 	get:
 		return selectedSum
 	set(newValue):
 		selectedSum = newValue
 		valueUpdated.emit(selectedSum)
+#endregion
 
 #region Variables
 var selection:Array = []    # list of all currently selected fields must be of type SingfleField / arrays can't be strongly typed
@@ -28,64 +30,6 @@ func _ready():
 
 #region Signals
 signal valueUpdated(int)    #triggers when the value of the selection was updated
-#endregion
-
-#region Interrnal Functions
-## initialize the fieldArray
-## since it is 2-dimensional it must be initialized manually
-func createFieldArray():
-	for x:int in range(0,4):
-		for y:int in range(0,4):
-			# prepare new line for next x
-			fieldList.append(getFieldByCoordinate(x,y))
-	prints(fieldList)
-
-## retruns a field from all fields that match x and y coordinate; else null
-func getFieldByCoordinate(x:int,y:int) -> SingleField:
-	for SingleSingleField in self.get_children():
-		if SingleSingleField is SingleField:
-			if SingleSingleField.x == x && SingleSingleField.y == y:
-				return SingleSingleField
-	return null
-
-
-## returns the field left of the field or null if empty
-## slow - could be done with direct link to field in fieldarray-1 and catch overflow to earlier line
-func getFieldToLeft(singleField:SingleField) -> SingleField:
-	var newX = singleField.x-1
-	if newX < 1:
-		return null
-	else:
-		return getFieldByCoordinate(newX,singleField.y)
-	
-## returns the field right of the field or null if empty
-## slow - could be done with direct link to field in fieldarray+1 and catch overflow to next line
-func getFieldToRight(singleField:SingleField) -> SingleField:
-	var newX = singleField.x+1
-	if newX > 4:
-		return null
-	else:
-		return getFieldByCoordinate(newX,singleField.y)
-	
-## returns the abope the field or null if empty
-## slow - could be done with direct link to field in fieldarray-5 and catch overflow to earlier line
-func getFieldAbove(singleField:SingleField) -> SingleField:
-	var newY = singleField.y-1
-	if newY < 0:
-		return null
-	else:
-		return getFieldByCoordinate(singleField.x,newY)
-
-## returns the field below the field or null if empty
-## slow - could be done with direct link to field in fieldarray+5 and catch overflow to next line
-func getFieldBelow(singleField:SingleField) -> SingleField:
-	var newY = singleField.y+1
-	if newY > 4:
-		return null
-	else:
-		return getFieldByCoordinate(singleField.x,newY)
-
-
 #endregion
 
 #region Signal Subscriptions
@@ -162,6 +106,61 @@ func _on_singleField_selected(singleField:SingleField):
 	# emit info to game that sum was updated
 #endregion
 
+#region Internal Functions
+## initialize the fieldArray
+## since it is 2-dimensional it must be initialized manually
+func createFieldArray():
+	for x:int in range(0,4):
+		for y:int in range(0,4):
+			# prepare new line for next x
+			fieldList.append(getFieldByCoordinate(x,y))
+	prints(fieldList)
+
+## retruns a field from all fields that match x and y coordinate; else null
+func getFieldByCoordinate(x:int,y:int) -> SingleField:
+	for SingleSingleField in self.get_children():
+		if SingleSingleField is SingleField:
+			if SingleSingleField.x == x && SingleSingleField.y == y:
+				return SingleSingleField
+	return null
+
+
+## returns the field left of the field or null if empty
+## slow - could be done with direct link to field in fieldarray-1 and catch overflow to earlier line
+func getFieldToLeft(singleField:SingleField) -> SingleField:
+	var newX = singleField.x-1
+	if newX < 1:
+		return null
+	else:
+		return getFieldByCoordinate(newX,singleField.y)
+	
+## returns the field right of the field or null if empty
+## slow - could be done with direct link to field in fieldarray+1 and catch overflow to next line
+func getFieldToRight(singleField:SingleField) -> SingleField:
+	var newX = singleField.x+1
+	if newX > 4:
+		return null
+	else:
+		return getFieldByCoordinate(newX,singleField.y)
+	
+## returns the abope the field or null if empty
+## slow - could be done with direct link to field in fieldarray-5 and catch overflow to earlier line
+func getFieldAbove(singleField:SingleField) -> SingleField:
+	var newY = singleField.y-1
+	if newY < 0:
+		return null
+	else:
+		return getFieldByCoordinate(singleField.x,newY)
+
+## returns the field below the field or null if empty
+## slow - could be done with direct link to field in fieldarray+5 and catch overflow to next line
+func getFieldBelow(singleField:SingleField) -> SingleField:
+	var newY = singleField.y+1
+	if newY > 4:
+		return null
+	else:
+		return getFieldByCoordinate(singleField.x,newY)
+
 ## returns a list of all fields that are in the selection and neighboring to this field
 ## order: above, below, left, right
 func getNeighborFieldsInSelection(singleField:SingleField) -> Array:
@@ -199,3 +198,32 @@ func getNeighborFieldsInSelection(singleField:SingleField) -> Array:
 		result.append(null)
 
 	return result
+
+## moves all monsters in row y one field to the left and returns the damage done
+func attackRow(y:int) -> int:
+	var result:int = 0  #no damage by default
+	# for performance, get all fields
+	var field1:SingleField=getFieldByCoordinate(1,y)
+	var field2:SingleField=getFieldByCoordinate(2,y)
+	var field3:SingleField=getFieldByCoordinate(3,y)
+	var field4:SingleField=getFieldByCoordinate(4,y)
+	
+	# deal damage
+	if getFieldByCoordinate(1,y).value>0: result = 1  #if there is a monster on the most left, deal damage
+	
+	# move all damages from left to right
+	field1.value=field2.value
+	field2.value=field3.value
+	field3.value=field4.value
+	
+	# add new monster from right if feasible
+	# TODO: implement logic to add new monster from right
+	field4.value=0
+	
+	# return result
+	return result
+#endregion
+
+
+
+

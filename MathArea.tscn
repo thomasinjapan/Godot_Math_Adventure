@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://suly7q515ycx"]
+[gd_scene load_steps=4 format=3 uid="uid://suly7q515ycx"]
 
 [ext_resource type="PackedScene" uid="uid://ccoq8do7h0thy" path="res://MonsterArea.tscn" id="1_2oigb"]
+[ext_resource type="Script" path="res://MathArea.gd" id="1_p6lhh"]
 [ext_resource type="PackedScene" uid="uid://8x86guso2bvg" path="res://Wall.tscn" id="2_k6gxl"]
 
 [node name="mathArea" type="Node2D"]
+script = ExtResource("1_p6lhh")
 
-[node name="allFields" parent="." instance=ExtResource("1_2oigb")]
+[node name="monsterArea" parent="." instance=ExtResource("1_2oigb")]
 position = Vector2(128, 0)
 
 [node name="wall" parent="." instance=ExtResource("2_k6gxl")]
