@@ -4,7 +4,7 @@ extends Node2D
 #region variables
 @export var HP:int = 4
 @export_group("location")
-@export var x:int = 1
+@export var y:int = 1
 #endregion
 
 #region Signals
@@ -21,7 +21,7 @@ func _ready():
 ## updates the labels based on the current values
 func updateLabels():
 	$labels/HP.text = str(HP)
-	$labels/x.text  = "x = " + str(x)
+	$labels/y.text  = "y = " + str(y)
 #endregion
 
 #region functions
