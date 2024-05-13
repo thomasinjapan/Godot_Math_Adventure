@@ -1,0 +1,98 @@
+[gd_scene load_steps=3 format=3 uid="uid://clv7iv1ivchmc"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_n8p6r"]
+font_size = 48
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kq4kv"]
+size = Vector2(128, 128)
+
+[node name="WallPiece" type="Node2D"]
+
+[node name="graphics" type="Node2D" parent="."]
+
+[node name="head" type="Polygon2D" parent="graphics"]
+color = Color(0.977962, 0.911604, 0.925369, 1)
+polygon = PackedVector2Array(16, 24, 16, 32, 24, 40, 40, 48, 56, 40, 64, 32, 64, 24)
+
+[node name="body" type="Polygon2D" parent="graphics"]
+color = Color(0.470588, 0.470588, 0.470588, 1)
+polygon = PackedVector2Array(24, 40, 16, 48, 16, 72, 64, 72, 64, 48, 56, 40)
+
+[node name="eye_right" type="Polygon2D" parent="graphics"]
+color = Color(0, 0, 1, 1)
+polygon = PackedVector2Array(56, 24, 48, 32, 48, 24)
+
+[node name="eye_left" type="Polygon2D" parent="graphics"]
+color = Color(0, 0, 1, 1)
+polygon = PackedVector2Array(32, 24, 24, 24, 24, 32)
+
+[node name="helmet" type="Polygon2D" parent="graphics"]
+position = Vector2(8, 0)
+color = Color(0.501961, 0.501961, 0.501961, 1)
+polygon = PackedVector2Array(24, 0, 8, 8, 0, 16, 0, 24, 64, 24, 64, 16, 56, 8, 40, 0)
+
+[node name="spearbase" type="Line2D" parent="graphics"]
+position = Vector2(11.7632, -15.0967)
+rotation = 0.280642
+points = PackedVector2Array(88, 72, 88, 0)
+default_color = Color(0.860369, 0.860369, 0.860369, 1)
+
+[node name="speartip" type="Polygon2D" parent="graphics"]
+position = Vector2(11.7632, -15.0967)
+rotation = 0.280642
+color = Color(0.898039, 0.921569, 0.92549, 1)
+polygon = PackedVector2Array(88, 0, 96, -8, 88, -24, 80, -8)
+
+[node name="ColorRect" type="ColorRect" parent="graphics"]
+offset_top = 64.0
+offset_right = 128.0
+offset_bottom = 128.0
+color = Color(0.7505, 0.396114, 0.198179, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="graphics"]
+offset_top = 48.0
+offset_right = 24.0
+offset_bottom = 72.0
+color = Color(0.7505, 0.396114, 0.198179, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="graphics"]
+offset_left = 48.0
+offset_top = 48.0
+offset_right = 72.0
+offset_bottom = 72.0
+color = Color(0.7505, 0.396114, 0.198179, 1)
+
+[node name="ColorRect4" type="ColorRect" parent="graphics"]
+offset_left = 96.0
+offset_top = 48.0
+offset_right = 120.0
+offset_bottom = 72.0
+color = Color(0.7505, 0.396114, 0.198179, 1)
+
+[node name="labels" type="Node2D" parent="."]
+
+[node name="HP" type="Label" parent="labels"]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 112.0
+offset_bottom = 112.0
+text = "HP"
+label_settings = SubResource("LabelSettings_n8p6r")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="x" type="Label" parent="labels"]
+offset_left = 88.0
+offset_top = 104.0
+offset_right = 128.0
+offset_bottom = 128.0
+text = "x=1"
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(64, 64)
+shape = SubResource("RectangleShape2D_kq4kv")
