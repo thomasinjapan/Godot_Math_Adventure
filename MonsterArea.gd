@@ -127,7 +127,6 @@ func getFieldByCoordinate(x:int,y:int) -> SingleField:
 				return SingleSingleField
 	return null
 
-
 ## returns the field left of the field or null if empty
 ## slow - could be done with direct link to field in fieldarray-1 and catch overflow to earlier line
 func getFieldToLeft(singleField:SingleField) -> SingleField:
@@ -136,7 +135,7 @@ func getFieldToLeft(singleField:SingleField) -> SingleField:
 		return null
 	else:
 		return getFieldByCoordinate(newX,singleField.y)
-	
+
 ## returns the field right of the field or null if empty
 ## slow - could be done with direct link to field in fieldarray+1 and catch overflow to next line
 func getFieldToRight(singleField:SingleField) -> SingleField:
@@ -145,7 +144,7 @@ func getFieldToRight(singleField:SingleField) -> SingleField:
 		return null
 	else:
 		return getFieldByCoordinate(newX,singleField.y)
-	
+
 ## returns the abope the field or null if empty
 ## slow - could be done with direct link to field in fieldarray-5 and catch overflow to earlier line
 func getFieldAbove(singleField:SingleField) -> SingleField:
