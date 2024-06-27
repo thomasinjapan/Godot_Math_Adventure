@@ -6,10 +6,12 @@ extends Node2D
 #region Properties
 var selectedSum:int:    # sum of all values in the selection
 	get:
+		var tmpSum:int = 0
+		for field:SingleField in selection:
+			tmpSum+=field.value
+		
+		selectedSum = tmpSum
 		return selectedSum
-	set(newValue):
-		selectedSum = newValue
-		valueUpdated.emit(selectedSum)
 #endregion
 
 #region Variables
@@ -21,24 +23,29 @@ var fieldList:Array=[]      ## is of all fields in order
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	createFieldArray()
-	# subscribe to all touch events of all singlefields
-	for SingleSingleField in self.get_children():
-		if SingleSingleField is SingleField:
-			SingleSingleField.touched.connect(_on_singleField_touched)
-			SingleSingleField.selected.connect(_on_singleField_selected)
+	subscribe_to_signals()
 #endregion
 
 #region Signals
 signal valueUpdated(int)    #triggers when the value of the selection was updated
+## TODO: do we need a signal that informs the game that the selection or selection sum changed?
 #endregion
 
 #region Signal Subscriptions
+## subscribe
+func subscribe_to_signals() -> void:
+	# subscribe to all touch events of all singlefields
+		for SingleSingleField in self.get_children():
+			if SingleSingleField is SingleField:
+				SingleSingleField.touched.connect(_on_singleField_touched)
+				SingleSingleField.selected.connect(_on_singleField_selected)
 
 ## triggers if a field is touched and checks if it
 ## - creates a new selection
 ## - adds to an existing selection
 ## - starts a new selection
 ## - removes from a selection <-- not sure if I will implemented
+## TODO: put all actions into own functions 
 func _on_singleField_touched(singleField:SingleField):
 	print("touched:" + singleField.name)
 	if selection == []:
@@ -96,12 +103,7 @@ func _on_singleField_touched(singleField:SingleField):
 
 ## triggers if a field is selected
 func _on_singleField_selected(singleField:SingleField):
-	#recalculate sum
-	var tmpSum:int = 0
-	for field:SingleField in selection:
-		tmpSum+=field.value
-
-	selectedSum = tmpSum
+	prints("new selected value: " + str(selectedSum))
 	
 	# emit info to game that sum was updated
 #endregion
@@ -124,7 +126,6 @@ func getFieldByCoordinate(x:int,y:int) -> SingleField:
 				return SingleSingleField
 	return null
 
-
 ## returns the field left of the field or null if empty
 ## slow - could be done with direct link to field in fieldarray-1 and catch overflow to earlier line
 func getFieldToLeft(singleField:SingleField) -> SingleField:
@@ -133,7 +134,7 @@ func getFieldToLeft(singleField:SingleField) -> SingleField:
 		return null
 	else:
 		return getFieldByCoordinate(newX,singleField.y)
-	
+
 ## returns the field right of the field or null if empty
 ## slow - could be done with direct link to field in fieldarray+1 and catch overflow to next line
 func getFieldToRight(singleField:SingleField) -> SingleField:
@@ -142,7 +143,7 @@ func getFieldToRight(singleField:SingleField) -> SingleField:
 		return null
 	else:
 		return getFieldByCoordinate(newX,singleField.y)
-	
+
 ## returns the abope the field or null if empty
 ## slow - could be done with direct link to field in fieldarray-5 and catch overflow to earlier line
 func getFieldAbove(singleField:SingleField) -> SingleField:
@@ -220,7 +221,6 @@ func attackRow(y:int) -> int:
 	# TODO: implement logic to add new monster from right
 	field4.value=0
 	
-	# return result
 	return result
 #endregion
 
