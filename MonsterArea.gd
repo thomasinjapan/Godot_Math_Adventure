@@ -21,11 +21,7 @@ var fieldList:Array=[]      ## is of all fields in order
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	createFieldArray()
-	# subscribe to all touch events of all singlefields
-	for SingleSingleField in self.get_children():
-		if SingleSingleField is SingleField:
-			SingleSingleField.touched.connect(_on_singleField_touched)
-			SingleSingleField.selected.connect(_on_singleField_selected)
+	subscribe_to_signals()
 #endregion
 
 #region Signals
@@ -33,6 +29,13 @@ signal valueUpdated(int)    #triggers when the value of the selection was update
 #endregion
 
 #region Signal Subscriptions
+## subscribe
+func subscribe_to_signals() -> void:
+	# subscribe to all touch events of all singlefields
+		for SingleSingleField in self.get_children():
+			if SingleSingleField is SingleField:
+				SingleSingleField.touched.connect(_on_singleField_touched)
+				SingleSingleField.selected.connect(_on_singleField_selected)
 
 ## triggers if a field is touched and checks if it
 ## - creates a new selection
