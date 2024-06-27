@@ -223,7 +223,6 @@ func attackRow(y:int) -> int:
 	# TODO: implement logic to add new monster from right
 	field4.value=0
 	
-	# return result
 	return result
 #endregion
 
