@@ -42,6 +42,7 @@ func subscribe_to_signals() -> void:
 ## - adds to an existing selection
 ## - starts a new selection
 ## - removes from a selection <-- not sure if I will implemented
+## TODO: put all actions into own functions 
 func _on_singleField_touched(singleField:SingleField):
 	print("touched:" + singleField.name)
 	if selection == []:
