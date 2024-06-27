@@ -6,10 +6,12 @@ extends Node2D
 #region Properties
 var selectedSum:int:    # sum of all values in the selection
 	get:
+		var tmpSum:int = 0
+		for field:SingleField in selection:
+			tmpSum+=field.value
+		
+		selectedSum = tmpSum
 		return selectedSum
-	set(newValue):
-		selectedSum = newValue
-		valueUpdated.emit(selectedSum)
 #endregion
 
 #region Variables
@@ -100,12 +102,7 @@ func _on_singleField_touched(singleField:SingleField):
 
 ## triggers if a field is selected
 func _on_singleField_selected(singleField:SingleField):
-	#recalculate sum
-	var tmpSum:int = 0
-	for field:SingleField in selection:
-		tmpSum+=field.value
-
-	selectedSum = tmpSum
+	prints("new selected value: " + str(selectedSum))
 	
 	# emit info to game that sum was updated
 #endregion
