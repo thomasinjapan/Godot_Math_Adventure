@@ -28,6 +28,7 @@ func _ready():
 
 #region Signals
 signal valueUpdated(int)    #triggers when the value of the selection was updated
+## TODO: do we need a signal that informs the game that the selection or selection sum changed?
 #endregion
 
 #region Signal Subscriptions
