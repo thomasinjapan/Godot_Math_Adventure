@@ -8,8 +8,6 @@ func _ready():
 #region functions
 ## makes all monsters to move one step left and if necessary attack the wall
 func attack() -> void:
-	# TODO: update selection - since all fields moved to the left, the selection needs to be deleted upon attack or moved w/ the attack
-	
 	# conduct attack
 	attackRow(1)
 	attackRow(2)

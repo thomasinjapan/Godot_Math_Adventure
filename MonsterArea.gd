@@ -231,7 +231,6 @@ func delete_selection() -> void:
 	
 	# make selection empty
 	selection = []
-
 #endregion
 
 
