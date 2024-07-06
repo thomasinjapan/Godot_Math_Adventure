@@ -84,10 +84,10 @@ func deselect():
 #endregion
 
 #region Signals
-signal valueUpdated(SingleField)   # emits if the value of a field has changed
-signal touched(SingleField)        # emits if field is touched and needs to be checked if it may be selected
-signal selected(SingleField)       # emits if a field was selected
-signal deselected(SingleField)     # emits if field selection ends
+signal valueUpdated(SingleField1)   # emits if the value of a field has changed
+signal touched(SingleField1)        # emits if field is touched and needs to be checked if it may be selected
+signal selected(SingleField1)       # emits if a field was selected
+signal deselected(SingleField1)     # emits if field selection ends
 #endregion
 
 #region system functions
