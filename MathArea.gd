@@ -8,15 +8,15 @@ func _ready():
 #region functions
 ## makes all monsters to move one step left and if necessary attack the wall
 func attack() -> void:
+	# remove selection
+	$monsterArea.delete_selection()
+	
 	# conduct attack
 	attackRow(1)
 	attackRow(2)
 	attackRow(3)
 	attackRow(4)
 	
-	# remove selection
-	$monsterArea.delete_selection()
-
 ## attacks in row y
 func attackRow(y:int) -> void:
 	#first, move all monsters in the monster area and get the value that attacks the wall
