@@ -15,6 +15,9 @@ func attack() -> void:
 	attackRow(2)
 	attackRow(3)
 	attackRow(4)
+	
+	# remove selection
+	$monsterArea.delete_selection()
 
 ## attacks in row y
 func attackRow(y:int) -> void:
