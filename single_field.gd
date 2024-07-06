@@ -51,14 +51,17 @@ var isSelected:bool = false :
 ## !!! does not trigger a signal if the selection status changes
 func addSelectionDirection(directions:enumSelectionDirection):
 	# add selection direction to all current directions
-	selectionBorder |= directions
+	## a bit clunky because enums are not int and need to be casted and casted back
+	## TODO: find a way to cast back to enum
+	selectionBorder = int(directions) | int(selectionBorder)
 	updateBorders()
 
 ## removes the selection directions from the selection of the field
 ## !!! does not trigger a selection if the selection status changes
 func removeSelectionDirection(directions:enumSelectionDirection):
 	# remove selection direction to all current directions
-	selectionBorder =  selectionBorder & ~directions
+	selectionBorder = int(selectionBorder) & ~int(directions)
+	
 	updateBorders()
 
 ## selects the field and marks all relevant borders
