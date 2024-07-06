@@ -4,14 +4,13 @@ extends Node2D
 # TODO: check if regions are still okay
 
 #region constants and enumerations
-const SELECTION_NONE = 0
-const SELECTION_UP = 1
-const SELECTION_DOWN = 2
-const SELECTION_LEFT = 4
-const SELECTION_RIGHT = 8
-const SELECTION_ALL = 15
-
-enum enumSelectionDirection {SELECTION_NONE, SELECTION_UP, SELECTION_DOWN, SELECTION_LEFT, SELECTION_RIGHT, SELECTION_ALL}
+enum enumSelectionDirection {
+		SELECTION_NONE = 0,
+		SELECTION_UP = 1,
+		SELECTION_DOWN = 2,
+		SELECTION_LEFT = 4,
+		SELECTION_RIGHT = 8,
+		SELECTION_ALL = 15}
 
 #endregion
 
@@ -24,7 +23,7 @@ enum enumSelectionDirection {SELECTION_NONE, SELECTION_UP, SELECTION_DOWN, SELEC
 		updateLabel()
 		valueUpdated.emit(self)
 
-@export var selectionBorder:enumSelectionDirection = SELECTION_NONE ## current selection border directions
+@export var selectionBorder:enumSelectionDirection = enumSelectionDirection.SELECTION_NONE ## current selection border directions
 
 ## defines if field is currently part of a selection
 var isSelected:bool = false :
@@ -72,7 +71,7 @@ func select(borderDirection:enumSelectionDirection):
 ## deselects the field and removes all UI markers
 func deselect():
 	# remove borders
-	removeSelectionDirection(SELECTION_ALL)
+	removeSelectionDirection(enumSelectionDirection.SELECTION_ALL)
 	
 	updateBorders()
 	
@@ -105,10 +104,10 @@ func updateLabel():
 ## updates the borders of the ui based on the current borderselection and if the field is selected at all
 func updateBorders():
 	$selection/me.visible=isSelected
-	$selection/top.visible= (selectionBorder & SELECTION_UP == SELECTION_UP)
-	$selection/bottom.visible= (selectionBorder & SELECTION_DOWN == SELECTION_DOWN)
-	$selection/left.visible= (selectionBorder & SELECTION_LEFT == SELECTION_LEFT)
-	$selection/right.visible= (selectionBorder & SELECTION_RIGHT == SELECTION_RIGHT)
+	$selection/top.visible= (selectionBorder & enumSelectionDirection.SELECTION_UP == enumSelectionDirection.SELECTION_UP)
+	$selection/bottom.visible= (selectionBorder & enumSelectionDirection.SELECTION_DOWN == enumSelectionDirection.SELECTION_DOWN)
+	$selection/left.visible= (selectionBorder & enumSelectionDirection.SELECTION_LEFT == enumSelectionDirection.SELECTION_LEFT)
+	$selection/right.visible= (selectionBorder & enumSelectionDirection.SELECTION_RIGHT == enumSelectionDirection.SELECTION_RIGHT)
 
 #endregion
 

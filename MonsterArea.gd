@@ -51,7 +51,7 @@ func _on_singleField_touched(singleField:SingleField):
 	if selection == []:
 		print("no selection so far")
 		selection.append(singleField)
-		singleField.select(SingleField.SELECTION_NONE)
+		singleField.select(SingleField.enumSelectionDirection.SELECTION_NONE)
 
 	elif selection.has(singleField):
 		print("field is already part of selection")
@@ -67,35 +67,35 @@ func _on_singleField_touched(singleField:SingleField):
 			for deselectField:SingleField in selection: deselectField.deselect()
 			#select new field only and add to selection
 			selection=[singleField]
-			singleField.select(SingleField.SELECTION_NONE)
+			singleField.select(SingleField.enumSelectionDirection.SELECTION_NONE)
 		else: 
 			#add to slection and update connections between selections
 			selection.append(singleField)
-			var borders:int = SingleField.SELECTION_NONE
+			var borders:int = SingleField.enumSelectionDirection.SELECTION_NONE
 
 			# handle if the field above is in selection
 			if neighborsFromSelection[0] != null:
 				var neighbor:SingleField = neighborsFromSelection[0]
-				borders |= SingleField.SELECTION_UP
-				neighbor.addSelectionDirection(SingleField.SELECTION_DOWN)
+				borders |= SingleField.enumSelectionDirection.SELECTION_UP
+				neighbor.addSelectionDirection(SingleField.enumSelectionDirection.SELECTION_DOWN)
 
 			# handle if the field below is in selection
 			if neighborsFromSelection[1] != null:
 				var neighbor:SingleField = neighborsFromSelection[1]
-				borders |= SingleField.SELECTION_DOWN
-				neighbor.addSelectionDirection(SingleField.SELECTION_UP)
+				borders |= SingleField.enumSelectionDirection.SELECTION_DOWN
+				neighbor.addSelectionDirection(SingleField.enumSelectionDirection.SELECTION_UP)
 
 			# handle if the field left is in selection
 			if neighborsFromSelection[2] != null:
 				var neighbor:SingleField = neighborsFromSelection[2]
-				borders |= SingleField.SELECTION_LEFT
-				neighbor.addSelectionDirection(SingleField.SELECTION_RIGHT)
+				borders |= SingleField.enumSelectionDirection.SELECTION_LEFT
+				neighbor.addSelectionDirection(SingleField.enumSelectionDirection.SELECTION_RIGHT)
 
 			# handle if the field above is in selection
 			if neighborsFromSelection[3] != null:
 				var neighbor:SingleField = neighborsFromSelection[3]
-				borders |= SingleField.SELECTION_RIGHT
-				neighbor.addSelectionDirection(SingleField.SELECTION_LEFT)
+				borders |= SingleField.enumSelectionDirection.SELECTION_RIGHT
+				neighbor.addSelectionDirection(SingleField.enumSelectionDirection.SELECTION_LEFT)
 
 			singleField.select(borders)
 
