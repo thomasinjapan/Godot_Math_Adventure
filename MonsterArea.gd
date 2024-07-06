@@ -222,6 +222,15 @@ func attackRow(y:int) -> int:
 	field4.value=0
 	
 	return result
+
+## deletes the selection / makes selection empty
+func delete_selection() -> void:
+	# remove all borders
+	for singleField:SingleField in selection:
+		singleField.deselect()
+	
+	# make selection empty
+	selection = []
 #endregion
 
 
